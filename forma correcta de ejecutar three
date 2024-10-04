@@ -4,7 +4,8 @@ correr este codigo---------------------> npm init -y
 luego este ---------------> npm install three
 
 
-crear este HTML:
+______________________________________________________crear este HTML:__________________________________________
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -16,7 +17,8 @@ crear este HTML:
     <script type="module" src="./app.js"></script>
 </body>
 </html>
- luego un js
+
+____________________________________________________LUEGO CREAR UN .JS_________________________________________
 
 import * as THREE from './node_modules/three/build/three.module.js';
 
@@ -26,7 +28,9 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const geometry = new THREE.BoxGeometry();
+____________________________________________________ESTO HASTA AQUI ES __________________________________________________
+
+const geometry = new THREE.BoxGeometry();                              _______esto hace un cubo________
 const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
