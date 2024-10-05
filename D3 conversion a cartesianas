@@ -1,0 +1,79 @@
+d3.csv('https://raw.githubusercontent.com/plotly/datasets/master/3d-scatter.csv', function(err, rows){
+  function unpack(rows, key) {
+    return rows.map(function(row) { return +row[key]; }); // Convert to numeric values
+  }
+
+  // Function to convert spherical to Cartesian
+  function sphericalToCartesian(r, theta, phi) {
+    const x = r * Math.sin(phi) * Math.cos(theta);
+    const y = r * Math.sin(phi) * Math.sin(theta);
+    const z = r * Math.cos(phi);
+    return { x, y, z };
+  }
+
+  // Example: assume the CSV provides spherical coordinates as 'r1', 'theta1', 'phi1'
+  var r1 = unpack(rows, 'r1');
+  var theta1 = unpack(rows, 'theta1'); // In radians
+  var phi1 = unpack(rows, 'phi1');     // In radians
+
+  // Convert spherical to Cartesian for trace1
+  var x1 = [], y1 = [], z1 = [];
+  for (let i = 0; i < r1.length; i++) {
+    let cartesian = sphericalToCartesian(r1[i], theta1[i], phi1[i]);
+    x1.push(cartesian.x);
+    y1.push(cartesian.y);
+    z1.push(cartesian.z);
+  }
+
+  var trace1 = {
+    x: x1, y: y1, z: z1,
+    mode: 'markers',
+    marker: {
+      size: 12,
+      line: {
+        color: 'rgba(217, 217, 217, 0.14)',
+        width: 0.5
+      },
+      opacity: 0.8
+    },
+    type: 'scatter3d'
+  };
+
+  // Similarly for trace2
+  var r2 = unpack(rows, 'r2');
+  var theta2 = unpack(rows, 'theta2');
+  var phi2 = unpack(rows, 'phi2');
+
+  var x2 = [], y2 = [], z2 = [];
+  for (let i = 0; i < r2.length; i++) {
+    let cartesian = sphericalToCartesian(r2[i], theta2[i], phi2[i]);
+    x2.push(cartesian.x);
+    y2.push(cartesian.y);
+    z2.push(cartesian.z);
+  }
+
+  var trace2 = {
+    x: x2, y: y2, z: z2,
+    mode: 'markers',
+    marker: {
+      color: 'rgb(127, 127, 127)',
+      size: 12,
+      symbol: 'circle',
+      line: {
+        color: 'rgb(204, 204, 204)',
+        width: 1
+      },
+      opacity: 0.8
+    },
+    type: 'scatter3d'
+  };
+
+  var data = [trace1, trace2];
+  var layout = {
+    margin: {
+      l: 0, r: 0, b: 0, t: 0
+    }
+  };
+
+  Plotly.newPlot('myDiv', data, layout);
+});
