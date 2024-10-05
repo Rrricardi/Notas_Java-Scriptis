@@ -1,5 +1,5 @@
 primero desde la terminal del proyecto
-
+primero instalar NODE.js
 correr este codigo---------------------> npm init -y
 luego este ---------------> npm install three
 
