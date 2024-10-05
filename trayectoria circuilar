@@ -1,0 +1,54 @@
+import * as THREE from './node_modules/three/build/three.module.js';
+
+// Crear la escena
+const scene = new THREE.Scene();
+
+// Crear la cámara
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(0, 0, 5);
+
+// Crear el renderizador
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// Crear una geometría de punto
+const pointGeometry = new THREE.SphereGeometry(0.1, 32, 32);
+const pointMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+const point = new THREE.Mesh(pointGeometry, pointMaterial);
+scene.add(point);
+
+// Crear una trayectoria circunferencia
+
+const pathPoints = [];
+const radius = 1; // Radio de la circunferencia
+const segments = 100; // Número de segmentos para aproximar la circunferencia
+
+for (let i = 0; i <= segments; i++) {
+  const theta = (i / segments) * 2 * Math.PI; // Ángulo en radianes
+  const x = radius * Math.cos(theta);
+  const y = radius * Math.sin(theta);
+  const z = radius * Math.sin(theta);
+  pathPoints.push(new THREE.Vector3(x, y, z));
+}
+
+const pathGeometry = new THREE.BufferGeometry().setFromPoints(pathPoints);
+const pathMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff });
+const path = new THREE.Line(pathGeometry, pathMaterial);
+scene.add(path);
+
+// Animar el punto a lo largo de la trayectoria
+let t = 0;
+function animate() {
+  requestAnimationFrame(animate);
+
+  // Actualizar la posición del punto
+  t += 0.01;
+  const index = Math.floor(t) % pathPoints.length;
+  point.position.copy(pathPoints[index]);
+
+  renderer.render(scene, camera);
+}
+
+// Iniciar la animación
+animate();
